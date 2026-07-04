@@ -1,0 +1,91 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+
+export default function Dashboard() {
+  const [balance, setBalance] = useState(124500);
+  const [miningActive, setMiningActive] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(1800);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (miningActive && timeLeft > 0) {
+      timer = setInterval(() => {
+        setTimeLeft(prev => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [miningActive, timeLeft]);
+
+  const startMining = () => {
+    setMiningActive(true);
+    setTimeLeft(1800);
+  };
+
+  const claimReward = () => {
+    const reward = 12450;
+    setBalance(prev => prev + reward);
+    setMiningActive(false);
+    alert(`🎉 You earned ₦${reward.toLocaleString()}!`);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0a2540] text-white pb-20">
+      <div className="max-w-4xl mx-auto px-6 pt-10">
+        <div className="flex justify-between items-center mb-10">
+          <div>
+            <h1 className="text-4xl font-bold">Welcome Back</h1>
+            <p className="text-emerald-400">Alex • Level 3</p>
+          </div>
+          <div className="text-right">
+            <p className="text-sm text-white/60">Balance</p>
+            <p className="text-4xl font-bold text-emerald-400">₦{balance.toLocaleString()}</p>
+          </div>
+        </div>
+
+        {/* Mining Section */}
+        <div className="glass rounded-3xl p-10 mb-8">
+          <h2 className="text-2xl font-semibold mb-6">Mining Station</h2>
+          
+          {miningActive ? (
+            <div className="text-center py-10">
+              <div className="text-6xl mb-6">⛏️</div>
+              <div className="text-5xl font-mono mb-4">
+                {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
+              </div>
+              <p className="text-white/70 mb-8">Mining in progress...</p>
+              
+              <button 
+                onClick={claimReward}
+                className="bg-white text-black px-12 py-4 rounded-2xl font-bold"
+              >
+                CLAIM ₦12,450
+              </button>
+            </div>
+          ) : (
+            <button 
+              onClick={startMining}
+              className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 py-6 rounded-3xl text-xl font-bold"
+            >
+              START MINING SESSION
+            </button>
+          )}
+        </div>
+
+        {/* Quick Links */}
+        <div className="grid grid-cols-2 gap-4">
+          <Link href="/withdraw" className="glass p-6 rounded-3xl text-center hover:scale-105 transition">
+            <p className="text-2xl mb-1">💰</p>
+            <p className="font-semibold">Withdraw</p>
+          </Link>
+          
+          <Link href="/upgrade" className="glass p-6 rounded-3xl text-center hover:scale-105 transition">
+            <p className="text-2xl mb-1">⭐</p>
+            <p className="font-semibold">Upgrade Level</p>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+  }

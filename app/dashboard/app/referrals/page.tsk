@@ -1,0 +1,51 @@
+'use client';
+
+import { useState } from 'react';
+import { Copy } from 'lucide-react';
+
+export default function Referrals() {
+  const userId = "alex12345"; // You can change this later
+  const referralLink = `https://paynova.app/ref/${userId}`;
+  
+  const [copied, setCopied] = useState(false);
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(referralLink);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0a2540] text-white pb-20">
+      <div className="max-w-4xl mx-auto px-6 pt-10">
+        <h1 className="text-4xl font-bold mb-2">Refer & Earn</h1>
+        <p className="text-emerald-400 mb-10">Earn ₦5,000 for every successful referral</p>
+
+        <div className="glass rounded-3xl p-8 mb-8">
+          <p className="text-white/70 mb-4">Your Unique Referral Link</p>
+          
+          <div className="flex gap-3 bg-white/10 p-4 rounded-2xl">
+            <input 
+              type="text" 
+              value={referralLink} 
+              readOnly 
+              className="bg-transparent flex-1 outline-none text-sm break-all" 
+            />
+            <button 
+              onClick={copyLink}
+              className="bg-emerald-500 hover:bg-emerald-600 px-8 py-3 rounded-xl flex items-center gap-2 transition"
+            >
+              <Copy size={20} /> 
+              {copied ? "Copied ✓" : "Copy"}
+            </button>
+          </div>
+        </div>
+
+        <div className="glass rounded-3xl p-8 text-center">
+          <p className="text-5xl font-bold text-emerald-400 mb-2">₦5,000</p>
+          <p className="text-white/70">Per Successful Referral</p>
+        </div>
+      </div>
+    </div>
+  );
+    }

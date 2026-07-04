@@ -1,0 +1,88 @@
+'use client';
+
+import { useState } from 'react';
+
+const plans = [
+  { level: 2, price: 15000, maxWithdraw: "₦250,000", benefit: "Higher mining rewards" },
+  { level: 3, price: 17000, maxWithdraw: "₦325,000", benefit: "Faster mining + Bonus" },
+  { level: 4, price: 20000, maxWithdraw: "₦417,000", benefit: "Priority support" },
+  { level: 5, price: 25000, maxWithdraw: "Unlimited", benefit: "Max everything" },
+];
+
+export default function Upgrade() {
+  const [selectedPlan, setSelectedPlan] = useState<any>(null);
+  const [receipt, setReceipt] = useState<File | null>(null);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) setReceipt(e.target.files[0]);
+  };
+
+  const confirmUpgrade = () => {
+    if (!receipt) {
+      alert("Please upload payment receipt");
+      return;
+    }
+    alert(`✅ Upgrade Request for Level \( {selectedPlan.level} Submitted!\n\nPayment of ₦ \){selectedPlan.price.toLocaleString()} received. Admin will review your receipt.`);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0a2540] text-white pb-20">
+      <div className="max-w-4xl mx-auto px-6 pt-10">
+        <h1 className="text-4xl font-bold mb-2">Upgrade Your Level</h1>
+        <p className="text-white/60 mb-10">Unlock higher earnings and withdrawal limits</p>
+
+        <div className="grid gap-6">
+          {plans.map((plan) => (
+            <div 
+              key={plan.level}
+              onClick={() => setSelectedPlan(plan)}
+              className={`glass p-8 rounded-3xl cursor-pointer transition-all ${selectedPlan?.level === plan.level ? 'ring-2 ring-emerald-400 scale-105' : ''}`}
+            >
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-emerald-400 font-mono text-sm">LEVEL {plan.level}</p>
+                  <p className="text-3xl font-bold mt-2">₦{plan.price.toLocaleString()}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm text-white/60">Max Withdrawal</p>
+                  <p className="font-semibold">{plan.maxWithdraw}</p>
+                </div>
+              </div>
+              <p className="mt-6 text-white/70">{plan.benefit}</p>
+            </div>
+          ))}
+        </div>
+
+        {selectedPlan && (
+          <div className="glass mt-10 p-8 rounded-3xl">
+            <h2 className="text-2xl font-semibold mb-6">Pay for Level {selectedPlan.level}</h2>
+            
+            <div className="bg-white/10 p-6 rounded-2xl mb-6">
+              <p><strong>Pay:</strong> ₦{selectedPlan.price.toLocaleString()}</p>
+              <p><strong>To:</strong> NWOBA CHINASA ANNA</p>
+              <p><strong>GT BANK:</strong> 0044193121</p>
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-sm mb-3">Upload Payment Receipt</label>
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={handleFileUpload}
+                className="w-full bg-white/10 border border-white/20 rounded-2xl p-4"
+              />
+              {receipt && <p className="text-emerald-400 mt-2">✓ {receipt.name}</p>}
+            </div>
+
+            <button 
+              onClick={confirmUpgrade}
+              className="w-full bg-emerald-500 py-5 rounded-3xl font-bold text-lg"
+            >
+              Confirm Upgrade Payment
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

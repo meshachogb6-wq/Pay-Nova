@@ -57,6 +57,6 @@ export default function Navbar() {
           </div>
         </div>
       )}
-    </nav>
+    <button className="text-2xl">🌙</button>
   );
     }

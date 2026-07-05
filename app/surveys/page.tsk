@@ -1,0 +1,51 @@
+'use client';
+
+import { useState } from 'react';
+
+const availableSurveys = [
+  { id: 1, title: "Consumer Feedback Survey", reward: 4500, time: "8 mins" },
+  { id: 2, title: "Product Testing Survey", reward: 7500, time: "15 mins" },
+  { id: 3, title: "Mobile App Usage Survey", reward: 3200, time: "6 mins" },
+];
+
+export default function Surveys() {
+  const [completed, setCompleted] = useState<number[]>([]);
+
+  const completeSurvey = (id: number, reward: number) => {
+    if (completed.includes(id)) return;
+    
+    setCompleted([...completed, id]);
+    alert(`✅ Survey Completed!\nYou earned ₦${reward} instantly!`);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0a2540] text-white pb-20">
+      <div className="max-w-4xl mx-auto px-6 pt-10">
+        <h1 className="text-4xl font-bold mb-8">Available Surveys</h1>
+        <p className="text-white/60 mb-10">Complete surveys and get paid instantly</p>
+
+        <div className="space-y-6">
+          {availableSurveys.map(survey => (
+            <div key={survey.id} className="glass rounded-3xl p-8 flex flex-col md:flex-row justify-between items-start gap-6">
+              <div>
+                <h3 className="text-2xl font-semibold">{survey.title}</h3>
+                <p className="text-white/60 mt-2">Duration: {survey.time}</p>
+              </div>
+              
+              <div className="text-right">
+                <p className="text-emerald-400 text-3xl font-bold">₦{survey.reward}</p>
+                <button 
+                  onClick={() => completeSurvey(survey.id, survey.reward)}
+                  disabled={completed.includes(survey.id)}
+                  className="mt-4 px-8 py-3 bg-emerald-500 rounded-2xl font-semibold disabled:bg-gray-600"
+                >
+                  {completed.includes(survey.id) ? "Completed ✓" : "Take Survey"}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+    }

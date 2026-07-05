@@ -1,0 +1,120 @@
+'use client';
+
+import { useState } from 'react';
+
+export default function Profile() {
+  const [user, setUser] = useState({
+    name: "Alex Johnson",
+    email: "alex@example.com",
+    phone: "08012345678",
+    bankName: "GTBank",
+    accountNumber: "1234567890",
+    accountName: "Alex Johnson"
+  });
+
+  const [editing, setEditing] = useState(false);
+
+  const handleSave = () => {
+    setEditing(false);
+    alert("✅ Profile Updated Successfully!");
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0a2540] text-white pb-20">
+      <div className="max-w-2xl mx-auto px-6 pt-10">
+        <h1 className="text-4xl font-bold mb-8">My Profile</h1>
+
+        <div className="glass rounded-3xl p-8 space-y-8">
+          <div>
+            <label className="block text-sm text-white/60 mb-2">Full Name</label>
+            <input 
+              type="text" 
+              value={user.name}
+              onChange={(e) => setUser({...user, name: e.target.value})}
+              disabled={!editing}
+              className="w-full bg-white/10 border border-white/20 rounded-2xl px-6 py-4"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm text-white/60 mb-2">Email Address</label>
+            <input 
+              type="email" 
+              value={user.email}
+              disabled 
+              className="w-full bg-white/10 border border-white/20 rounded-2xl px-6 py-4"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm text-white/60 mb-2">Phone Number</label>
+            <input 
+              type="tel" 
+              value={user.phone}
+              onChange={(e) => setUser({...user, phone: e.target.value})}
+              disabled={!editing}
+              className="w-full bg-white/10 border border-white/20 rounded-2xl px-6 py-4"
+            />
+          </div>
+
+          <div className="pt-6 border-t border-white/10">
+            <h3 className="font-semibold mb-6">Bank Details</h3>
+            
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm text-white/60 mb-2">Bank Name</label>
+                <input 
+                  type="text" 
+                  value={user.bankName}
+                  onChange={(e) => setUser({...user, bankName: e.target.value})}
+                  disabled={!editing}
+                  className="w-full bg-white/10 border border-white/20 rounded-2xl px-6 py-4"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm text-white/60 mb-2">Account Number</label>
+                <input 
+                  type="text" 
+                  value={user.accountNumber}
+                  onChange={(e) => setUser({...user, accountNumber: e.target.value})}
+                  disabled={!editing}
+                  className="w-full bg-white/10 border border-white/20 rounded-2xl px-6 py-4"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm text-white/60 mb-2">Account Name</label>
+                <input 
+                  type="text" 
+                  value={user.accountName}
+                  onChange={(e) => setUser({...user, accountName: e.target.value})}
+                  disabled={!editing}
+                  className="w-full bg-white/10 border border-white/20 rounded-2xl px-6 py-4"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-6 flex gap-4">
+            {!editing ? (
+              <button 
+                onClick={() => setEditing(true)}
+                className="flex-1 bg-white/10 py-4 rounded-2xl font-semibold"
+              >
+                Edit Profile
+              </button>
+            ) : (
+              <button 
+                onClick={handleSave}
+                className="flex-1 bg-emerald-500 py-4 rounded-2xl font-semibold"
+              >
+                Save Changes
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+    }
